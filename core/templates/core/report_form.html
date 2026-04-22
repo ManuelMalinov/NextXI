@@ -1,0 +1,23 @@
+{% extends "core/base.html" %}
+{% block content %}
+
+<h2>{{ title }}</h2>
+
+<div class="card" style="margin-bottom: 20px;">
+    <strong>Reporting:</strong> {{ target_name }}
+</div>
+
+<form method="post">
+    {% csrf_token %}
+
+    <label>Reason</label><br>
+    {{ form.reason }}<br><br>
+
+    <label>Additional Details (optional)</label><br>
+    {{ form.details }}<br><br>
+
+    <button type="submit" class="btn btn-blue">Submit Report</button>
+    <a href="{{ cancel_url }}" class="btn btn-gray">Cancel</a>
+</form>
+
+{% endblock %}

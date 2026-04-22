@@ -1,0 +1,37 @@
+{% extends "core/base.html" %}
+{% block content %}
+
+<h2>My Shortlist</h2>
+
+{% if shortlist_entries %}
+    {% for entry in shortlist_entries %}
+        <div class="card" style="margin-bottom: 15px;">
+            <strong>{{ entry.player.user.username }}</strong><br>
+            Position: {{ entry.player.get_primary_position_display }}<br>
+            Experience: {{ entry.player.get_experience_level_display }}<br>
+            Availability: {{ entry.player.get_availability_window_display }}<br>
+            Location: {{ entry.player.get_locality_area_display }}<br>
+            Added: {{ entry.added_at|date:"d M Y H:i" }}<br><br>
+
+            <a href="{% url 'club_view_player' entry.player.id %}?next_url={% url 'club_shortlist' %}" class="btn btn-blue">
+                View Full Profile
+            </a>
+
+            <a href="{% url 'invite_to_trial' entry.player.id %}" class="btn btn-blue">
+                Invite to Trial
+            </a>
+
+            <form method="post" action="{% url 'remove_from_shortlist' entry.player.id %}" style="display:inline;">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{% url 'club_shortlist' %}">
+                <button type="submit" class="btn btn-gray">Remove</button>
+            </form>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>Your shortlist is empty.</p>
+{% endif %}
+
+<a href="{% url 'club_dashboard' %}" class="btn btn-gray">Back to Dashboard</a>
+
+{% endblock %}

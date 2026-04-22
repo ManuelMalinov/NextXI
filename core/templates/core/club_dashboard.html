@@ -1,0 +1,73 @@
+{% extends "core/base.html" %}
+{% block content %}
+
+<h2>Club Dashboard</h2>
+
+{% if not profile_complete %}
+<div class="alert alert-warning">
+    <strong>Complete your club profile</strong><br>
+    Your club profile must be completed before you can invite players.
+    <br><br>
+    <a href="/club/profile/" class="btn btn-primary">Complete Profile</a>
+</div>
+{% else %}
+<p><strong>Welcome back, {{ club.name }}!</strong></p>
+
+<div class="visibility-status visible">
+    <span class="status-icon">✓</span>
+    <span class="status-text">Your club profile is active</span>
+</div>
+
+<div class="actions">
+    <a href="/club/profile/" class="btn btn-blue">Edit Profile</a>
+    <a href="/club/search/" class="btn btn-blue">Search Players</a>
+    <a href="{% url 'club_shortlist' %}" class="btn btn-blue">Shortlist ({{ shortlist_count }})</a>
+    <a href="{% url 'club_trial_requests' %}" class="btn btn-blue">Trial Requests</a>
+    <a href="{% url 'my_reports' %}" class="btn btn-blue">My Reports</a>
+</div>
+
+<hr>
+
+<h3>Suggested Players</h3>
+
+{% if suggested_players_page_obj and suggested_players_page_obj.object_list %}
+    {% for player in suggested_players_page_obj %}
+        <div class="card" style="margin-bottom: 15px;">
+            <strong>{{ player.user.username }}</strong><br>
+            Position: {{ player.get_primary_position_display }}<br>
+            Experience: {{ player.get_experience_level_display }}<br>
+            Availability: {{ player.get_availability_window_display }}<br>
+            Location: {{ player.get_locality_area_display }}<br>
+            Match Score: {{ player.match_score_percent }}%<br>
+            Rationale: {{ player.match_rationale }}<br><br>
+
+            <a href="{% url 'club_view_player' player.id %}?next_url={% url 'club_dashboard' %}" class="btn btn-blue">
+                View Full Profile
+            </a>
+
+            <a href="{% url 'invite_to_trial' player.id %}" class="btn btn-blue">
+                Invite to Trial
+            </a>
+        </div>
+    {% endfor %}
+
+    <div style="margin-top: 20px;">
+        {% if suggested_players_page_obj.has_previous %}
+            <a href="?suggestions_page={{ suggested_players_page_obj.previous_page_number }}" class="btn btn-gray">Previous</a>
+        {% endif %}
+
+        <span style="margin: 0 10px;">
+            Page {{ suggested_players_page_obj.number }} of {{ suggested_players_page_obj.paginator.num_pages }}
+        </span>
+
+        {% if suggested_players_page_obj.has_next %}
+            <a href="?suggestions_page={{ suggested_players_page_obj.next_page_number }}" class="btn btn-gray">Next</a>
+        {% endif %}
+    </div>
+{% else %}
+    <p>No suggested players yet. Run a successful search and shortlist or invite a player first.</p>
+{% endif %}
+
+{% endif %}
+
+{% endblock %}

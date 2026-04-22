@@ -1,0 +1,34 @@
+{% extends "core/base.html" %}
+{% block content %}
+
+<h2>Player Dashboard</h2>
+
+{% if not profile_complete %}
+<div class="alert alert-warning">
+    <strong>Complete your profile</strong><br>
+    Your profile must be completed before clubs can discover you.
+    <br><br>
+    <a href="/player/profile/" class="btn btn-primary">Complete Profile</a>
+</div>
+{% else %}
+<p><strong>Welcome back, {{ player.user.username }}!</strong></p>
+
+{% if player.visibility %}
+    <div class="alert alert-success">
+        Your profile is visible to clubs.
+    </div>
+{% else %}
+    <div class="alert alert-danger">
+        Your profile is currently hidden from clubs.
+    </div>
+{% endif %}
+
+<div class="actions">
+    <a href="{% url 'player_profile' %}" class="btn btn-blue">Edit Profile</a>
+    <a href="{% url 'player_trials' %}" class="btn btn-blue">View Trial Invitations</a>
+    <a href="{% url 'player_feedback_history' %}" class="btn btn-blue">Outcomes & Feedback</a>
+    <a href="{% url 'my_reports' %}" class="btn btn-blue">My Reports</a>
+</div>
+{% endif %}
+
+{% endblock %}

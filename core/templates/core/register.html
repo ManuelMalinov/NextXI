@@ -1,0 +1,30 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<h2>Register</h2>
+
+<p>Please select your role and create an account.</p>
+
+{% if error %}
+<div class="alert alert-error">{{ error }}</div>
+{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+
+    <label>Username</label>
+    <input type="text" name="username" required>
+
+    <label>Password</label>
+    <input type="password" name="password" required>
+
+    <label>Register as</label>
+    <select name="role" required>
+        <option value="">-- Select role --</option>
+        <option value="player">Player</option>
+        <option value="club">Club</option>
+    </select>
+
+    <button type="submit" class="btn btn-blue">Register</button>
+</form>
+{% endblock %}

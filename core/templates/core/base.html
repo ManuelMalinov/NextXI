@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NextXI</title>
+    <link rel="stylesheet" href="{% static 'core/style.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+
+    <div class="navbar">
+        <div class="nav-left">
+
+            {% if user.is_authenticated %}
+                {% if user.player %}
+                    <a href="{% url 'player_dashboard' %}" class="brand">NextXI</a>
+                {% elif user.club %}
+                    <a href="{% url 'club_dashboard' %}" class="brand">NextXI</a>
+                {% else %}
+                    <a href="{% url 'home' %}" class="brand">NextXI</a>
+                {% endif %}
+            {% else %}
+                <a href="{% url 'home' %}" class="brand">NextXI</a>
+            {% endif %}
+
+        </div>
+    
+        <div class="nav-right">
+            {% if user.is_authenticated %}
+                <span class="welcome">Hello {{ user.username }}</span>
+                <a href="{% url 'logout' %}" class="nav-link">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}" class="nav-link">Login</a>
+                <a href="{% url 'register' %}" class="nav-link btn-primary">Register</a>
+            {% endif %}
+        </div>
+    </div>
+    
+    <div class="container">
+        {% block content %}{% endblock %}
+
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="footer">
+        Final Year Project – NextXI
+    </div>
+
+</body>
+</html>

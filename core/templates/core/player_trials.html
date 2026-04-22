@@ -1,0 +1,37 @@
+{% extends "core/base.html" %}
+{% load tz %}
+{% block content %}
+
+<h2>Your Trial Invitations</h2>
+
+{% if trials %}
+    {% for trial in trials %}
+        <div class="card">
+            <strong>{{ trial.club.name }}</strong><br>
+            Division: {{ trial.club.get_division_display }}<br>
+
+            <p>
+                Date: {{ trial.trial_datetime|localtime|date:"d M Y H:i" }}<br>
+                Location: {{ trial.location }}<br>
+                Status: <strong>{{ trial.get_status_display }}</strong>
+            </p>
+
+            {% if trial.status == "pending" %}
+                <a href="{% url 'trial_detail' trial.id %}" class="btn btn-blue">
+                    View & Respond
+                </a>
+            {% else %}
+                <a href="{% url 'trial_detail' trial.id %}" class="btn btn-gray">
+                    View Details
+                </a>
+            {% endif %}
+        </div>
+        <br>
+    {% endfor %}
+{% else %}
+    <p>No trial invitations yet.</p>
+{% endif %}
+
+<a href="{% url 'player_dashboard' %}" class="btn btn-gray">Back to Dashboard</a>
+
+{% endblock %}

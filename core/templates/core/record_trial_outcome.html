@@ -1,0 +1,83 @@
+{% extends "core/base.html" %}
+{% block content %}
+
+<h2>Record Trial Outcome</h2>
+
+<div class="card" style="margin-bottom: 20px;">
+    <strong>Player:</strong> {{ trial.player.user.username }}<br>
+    <strong>Primary Position:</strong> {{ trial.player.get_primary_position_display }}<br>
+    <strong>Trial Date:</strong> {{ trial.trial_datetime|date:"d M Y H:i" }}<br>
+    <strong>Location:</strong> {{ trial.location }}<br>
+    <strong>Status:</strong> {{ trial.get_status_display }}<br>
+</div>
+
+<form method="post">
+    {% csrf_token %}
+
+    <label><strong>Did the player attend?</strong></label><br>
+    {{ form.attendance }}<br><br>
+
+    <div id="attendance-no-note" style="display:none; margin-bottom: 20px;">
+        <p>If the player did not attend, the system will automatically record a no-show and no offer.</p>
+    </div>
+
+    <div id="performance-fields">
+        <label><strong>Positional Suitability</strong></label><br>
+        {{ form.positional_suitability }}<br><br>
+
+        <label><strong>Work Rate</strong></label><br>
+        {{ form.work_rate }}<br><br>
+
+        <label><strong>Decision Making</strong></label><br>
+        {{ form.decision_making }}<br><br>
+
+        <label><strong>Understanding with Teammates</strong></label><br>
+        {{ form.teammate_understanding }}<br><br>
+
+        <label><strong>Physicality</strong></label><br>
+        {{ form.physicality }}<br><br>
+
+        <label><strong>Would you like to offer the player a place in the team?</strong></label><br>
+        {{ form.offer_decision }}<br><br>
+    </div>
+
+    <label><strong>Additional Comment (optional)</strong></label><br>
+    {{ form.club_comment }}<br><br>
+
+    <button type="submit" class="btn btn-blue">Save Outcome & Generate Feedback</button>
+    <a href="{% url 'club_trial_requests' %}" class="btn btn-gray">Cancel</a>
+</form>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const attendanceInputs = document.querySelectorAll('input[name="attendance"]');
+    const performanceFields = document.getElementById("performance-fields");
+    const attendanceNoNote = document.getElementById("attendance-no-note");
+
+    function updateOutcomeForm() {
+        const selected = document.querySelector('input[name="attendance"]:checked');
+
+        if (!selected) {
+            performanceFields.style.display = "block";
+            attendanceNoNote.style.display = "none";
+            return;
+        }
+
+        if (selected.value === "did_not_attend") {
+            performanceFields.style.display = "none";
+            attendanceNoNote.style.display = "block";
+        } else {
+            performanceFields.style.display = "block";
+            attendanceNoNote.style.display = "none";
+        }
+    }
+
+    attendanceInputs.forEach(input => {
+        input.addEventListener("change", updateOutcomeForm);
+    });
+
+    updateOutcomeForm();
+});
+</script>
+
+{% endblock %}

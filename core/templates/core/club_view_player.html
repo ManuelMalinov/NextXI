@@ -1,0 +1,74 @@
+{% extends "core/base.html" %}
+{% load tz %}
+{% block content %}
+
+<h2>Player Profile</h2>
+
+<div class="card">
+    <strong>{{ player.user.username }}</strong><br><br>
+
+    Primary Position: {{ player.get_primary_position_display }}<br>
+
+    {% if player.secondary_position %}
+        Secondary Position: {{ player.get_secondary_position_display }}<br>
+    {% endif %}
+
+    Preferred Foot: {{ player.get_preferred_foot_display }}<br>
+    Height: {{ player.height_cm }} cm<br>
+    Experience: {{ player.get_experience_level_display }}<br>
+    Availability: {{ player.get_availability_window_display }}<br>
+    Location: {{ player.get_locality_area_display }}<br>
+
+    {% if player.bio %}
+        <br>
+        <strong>Bio</strong><br>
+        <p>{{ player.bio }}</p>
+    {% endif %}
+
+    <hr>
+
+    {% if latest_player_report %}
+        <p><strong>Your Latest Report Status:</strong> {{ latest_player_report.get_status_display }}</p>
+        <p><strong>Reported On:</strong> {{ latest_player_report.created_at|localtime|date:"d M Y H:i" }}</p>
+
+        {% if latest_player_report.resolved_at %}
+            <p><strong>Reviewed On:</strong> {{ latest_player_report.resolved_at|localtime|date:"d M Y H:i" }}</p>
+        {% endif %}
+
+        {% if latest_player_report.admin_notes %}
+            <p><strong>Admin Note:</strong> {{ latest_player_report.admin_notes }}</p>
+        {% endif %}
+
+        <br>
+    {% endif %}
+
+    <a href="{% url 'invite_to_trial' player.id %}" class="btn btn-blue">
+        Invite to Trial
+    </a>
+
+    {% if is_shortlisted %}
+        <span class="btn btn-gray">Already Shortlisted</span>
+    {% else %}
+        <form method="post" action="{% url 'add_to_shortlist' player.id %}" style="display:inline;">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ back_url }}">
+            <button type="submit" class="btn btn-gray">Add to Shortlist</button>
+        </form>
+    {% endif %}
+
+    {% if latest_player_report and latest_player_report.status == "open" %}
+        <span class="btn btn-gray">Report Submitted</span>
+    {% else %}
+        <a href="{% url 'report_player_profile' player.id %}" class="btn btn-gray">
+            {% if latest_player_report %}
+                Submit New Report
+            {% else %}
+                Report Player
+            {% endif %}
+        </a>
+    {% endif %}
+
+    <a href="{{ back_url }}" class="btn btn-gray">{{ back_label }}</a>
+</div>
+
+{% endblock %}

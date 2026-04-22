@@ -1,0 +1,27 @@
+{% extends "core/base.html" %}
+{% block content %}
+
+<h2>Invite {{ player.user.username }} to Trial</h2>
+
+<form method="post">
+    {% csrf_token %}
+
+    <label>Trial Date & Time</label><br>
+    <input type="datetime-local" name="trial_datetime" required><br><br>
+
+    <label>Location</label><br>
+    <input type="text" name="location" placeholder="Training ground or stadium" required><br><br>
+
+    <label>Notes (optional)</label><br>
+    <textarea name="notes" placeholder="Anything the player should know"></textarea><br><br>
+
+    <button type="submit" class="btn btn-blue">
+        Send Trial Invitation
+    </button>
+
+    <a href="{% url 'club_dashboard' %}" class="btn btn-gray">
+        Cancel
+    </a>
+</form>
+
+{% endblock %}

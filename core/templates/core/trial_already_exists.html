@@ -1,0 +1,27 @@
+{% extends "core/base.html" %}
+{% block content %}
+
+<h2>Trial Request Already Exists ⏳</h2>
+
+<div class="card">
+    <p><strong>Player:</strong> {{ player.user.username }}</p>
+    <p><strong>Current Status:</strong> {{ trial.get_status_display }}</p>
+
+    {% if trial.status == "pending" %}
+        <p>You have already invited this player to a trial and are waiting for their response.</p>
+    {% elif trial.status == "accepted" %}
+        <p>This player has already accepted a trial invitation from your club.</p>
+    {% elif trial.status == "declined" %}
+        <p>This player previously declined a trial invitation from your club.</p>
+    {% elif trial.status == "completed" %}
+        <p>This player has already completed a trial with your club and the outcome has already been recorded.</p>
+    {% endif %}
+
+    <br>
+    <a href="{% url 'club_view_player' player.id %}" class="btn btn-blue">Back to Player Profile</a>
+    <a href="{% url 'club_trial_requests' %}" class="btn btn-gray">Manage Trial Requests</a>
+</div>
+
+{% endblock %}
+
+

@@ -1,0 +1,91 @@
+{% extends "core/base.html" %}
+{% block content %}
+
+<h2>Your Player Profile</h2>
+
+<form method="post">
+    {% csrf_token %}
+
+    <label>Primary Position</label>
+    <select name="primary_position" required>
+        <option value="">Select position</option>
+        {% for value, label in player.POSITION_CHOICES %}
+            <option value="{{ value }}" {% if player.primary_position == value %}selected{% endif %}>
+                {{ label }}
+            </option>
+        {% endfor %}
+    </select><br><br>
+
+    <label>Secondary Position</label>
+    <select name="secondary_position">
+        <option value="">Select position</option>
+        {% for value, label in player.POSITION_CHOICES %}
+            <option value="{{ value }}" {% if player.secondary_position == value %}selected{% endif %}>
+                {{ label }}
+            </option>
+        {% endfor %}
+    </select><br><br>
+
+    <label>Preferred Foot</label>
+    <select name="preferred_foot" required>
+        <option value="">Select foot</option>
+        {% for value, label in player.FOOT_CHOICES %}
+            <option value="{{ value }}" {% if player.preferred_foot == value %}selected{% endif %}>
+                {{ label }}
+            </option>
+        {% endfor %}
+    </select><br><br>
+
+    <label>Height (cm)</label>
+    <input type="number" name="height_cm" value="{{ player.height_cm|default:'' }}" required><br><br>
+
+    <label>Experience Level</label>
+    <select name="experience_level" required>
+        <option value="">Select experience</option>
+        {% for value, label in player.EXPERIENCE_CHOICES %}
+            <option value="{{ value }}" {% if player.experience_level == value %}selected{% endif %}>
+                {{ label }}
+            </option>
+        {% endfor %}
+    </select><br><br>
+
+    <label>Availability</label>
+    <select name="availability_window" required>
+        <option value="">Select availability</option>
+        {% for value, label in player.AVAILABILITY_CHOICES %}
+            <option value="{{ value }}" {% if player.availability_window == value %}selected{% endif %}>
+                {{ label }}
+            </option>
+        {% endfor %}
+    </select><br><br>
+
+    <label>London Area</label>
+    <select name="locality_area" required>
+        <option value="">Select area</option>
+        {% for value, label in player.LONDON_AREA_CHOICES %}
+            <option value="{{ value }}" {% if player.locality_area == value %}selected{% endif %}>
+                {{ label }}
+            </option>
+        {% endfor %}
+    </select><br><br>
+
+    <label>Private Email</label>
+    <input type="email" name="contact_email" value="{{ player.contact_email|default:'' }}" required><br><br>
+
+    <label>Private Phone Number (optional)</label>
+    <input type="text" name="contact_phone" value="{{ player.contact_phone|default:'' }}"><br><br>
+
+    <label>Bio</label>
+    <textarea name="bio" rows="4">{{ player.bio|default:'' }}</textarea><br><br>
+
+    <label>
+        <input type="checkbox" name="visibility" {% if player.visibility %}checked{% endif %}>
+        Make profile visible to clubs
+    </label><br><br>
+
+    <p><strong>Note:</strong> Your email and phone number are private and are not shown to clubs. They are retained only for account administration and moderation purposes.</p>
+
+    <button type="submit" class="btn btn-blue">Save Profile</button>
+</form>
+
+{% endblock %}

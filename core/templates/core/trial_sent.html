@@ -1,0 +1,16 @@
+{% extends "core/base.html" %}
+{% block content %}
+
+<h2>Trial Invitation Sent ✅</h2>
+
+<p>
+You have successfully invited <strong>{{ player.user.username }}</strong> to a trial.
+They will be notified and can accept or decline.
+</p>
+
+<div class="actions">
+    <a href="{% url 'club_dashboard' %}" class="btn btn-blue">Back to Dashboard</a>
+    <a href="{% url 'club_search_players' %}" class="btn btn-gray">Search More Players</a>
+</div>
+
+{% endblock %}

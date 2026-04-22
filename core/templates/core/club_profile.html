@@ -1,0 +1,44 @@
+{% extends "core/base.html" %}
+{% block content %}
+
+<h2>Your Club Profile</h2>
+
+<form method="post">
+    {% csrf_token %}
+
+    <label>Club Name</label>
+    <input type="text" name="name" value="{{ club.name|default:'' }}" required><br><br>
+
+    <label>Division</label>
+    <select name="division" required>
+        <option value="">Select division</option>
+        {% for value, label in divisions %}
+            <option value="{{ value }}" {% if club.division == value %}selected{% endif %}>
+                {{ label }}
+            </option>
+        {% endfor %}
+    </select><br><br>
+
+    <label>Home Ground</label>
+    <input type="text" name="home_ground" value="{{ club.home_ground|default:'' }}" required><br><br>
+
+    <label>Club Email</label>
+    <input type="email" name="contact_email" value="{{ club.contact_email|default:'' }}" required><br><br>
+
+    <label>Club Phone Number</label>
+    <input type="text" name="contact_phone" value="{{ club.contact_phone|default:'' }}" required><br><br>
+
+    <label>Preferred Contact Method</label>
+    <select name="contact_pref" required>
+        <option value="">Select contact preference</option>
+        {% for value, label in contact_prefs %}
+            <option value="{{ value }}" {% if club.contact_pref == value %}selected{% endif %}>
+                {{ label }}
+            </option>
+        {% endfor %}
+    </select><br><br>
+
+    <button type="submit" class="btn btn-blue">Save Profile</button>
+</form>
+
+{% endblock %}

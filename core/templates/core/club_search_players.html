@@ -1,0 +1,130 @@
+{% extends "core/base.html" %}
+{% block content %}
+
+<h2>Search Players</h2>
+
+<p><strong>Primary Position is required</strong> for ranked search results.</p>
+
+<form method="get">
+    <label>Primary Position</label>
+    <select name="position" required>
+        <option value="">Select position</option>
+        {% for value, label in positions %}
+            <option value="{{ value }}" {% if selected_position == value %}selected{% endif %}>
+                {{ label }}
+            </option>
+        {% endfor %}
+    </select><br><br>
+
+    <label>Experience Level</label>
+    <select name="experience">
+        <option value="">Any</option>
+        {% for value, label in experiences %}
+            <option value="{{ value }}" {% if selected_experience == value %}selected{% endif %}>
+                {{ label }}
+            </option>
+        {% endfor %}
+    </select><br><br>
+
+    <label>Availability</label>
+    <select name="availability">
+        <option value="">Any</option>
+        {% for value, label in availabilities %}
+            <option value="{{ value }}" {% if selected_availability == value %}selected{% endif %}>
+                {{ label }}
+            </option>
+        {% endfor %}
+    </select><br><br>
+
+    <label>London Area</label>
+    <select name="locality">
+        <option value="">Any</option>
+        {% for value, label in localities %}
+            <option value="{{ value }}" {% if selected_locality == value %}selected{% endif %}>
+                {{ label }}
+            </option>
+        {% endfor %}
+    </select><br><br>
+
+    <hr>
+
+    <h3>Matching Preferences</h3>
+    <p>If multiple factors share the same priority, the system automatically balances the weights.</p>
+
+    <label>Experience Priority</label>
+    <select name="experience_priority">
+        <option value="high" {% if experience_priority == "high" %}selected{% endif %}>High</option>
+        <option value="medium" {% if experience_priority == "medium" %}selected{% endif %}>Medium</option>
+        <option value="low" {% if experience_priority == "low" %}selected{% endif %}>Low</option>
+    </select><br><br>
+
+    <label>Availability Priority</label>
+    <select name="availability_priority">
+        <option value="high" {% if availability_priority == "high" %}selected{% endif %}>High</option>
+        <option value="medium" {% if availability_priority == "medium" %}selected{% endif %}>Medium</option>
+        <option value="low" {% if availability_priority == "low" %}selected{% endif %}>Low</option>
+    </select><br><br>
+
+    <label>Locality Priority</label>
+    <select name="locality_priority">
+        <option value="high" {% if locality_priority == "high" %}selected{% endif %}>High</option>
+        <option value="medium" {% if locality_priority == "medium" %}selected{% endif %}>Medium</option>
+        <option value="low" {% if locality_priority == "low" %}selected{% endif %}>Low</option>
+    </select><br><br>
+
+    <button class="btn btn-blue" type="submit">Search</button>
+</form>
+
+<hr>
+
+{% if searched %}
+    {% if players_page_obj and players_page_obj.object_list %}
+        <h3>Ranked Results</h3>
+
+        {% for player in players_page_obj %}
+            <div class="card" style="margin-bottom: 15px;">
+                <strong>{{ player.user.username }}</strong><br>
+                Position: {{ player.get_primary_position_display }}<br>
+                Experience: {{ player.get_experience_level_display }}<br>
+                Availability: {{ player.get_availability_window_display }}<br>
+                Location: {{ player.get_locality_area_display }}<br>
+                Match Score: {{ player.match_score_percent }}%<br>
+                Rationale: {{ player.match_rationale }}<br><br>
+
+                <a href="{% url 'club_view_player' player.id %}?next_query={{ current_search_query|urlencode }}" class="btn btn-blue">
+                    View Full Profile
+                </a>
+
+                {% if player.id in shortlisted_player_ids %}
+                    <span class="btn btn-gray">Already Shortlisted</span>
+                {% else %}
+                    <form method="post" action="{% url 'add_to_shortlist' player.id %}" style="display:inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="next" value="{% url 'club_search_players' %}?{{ current_search_query }}">
+                        <button type="submit" class="btn btn-gray">Add to Shortlist</button>
+                    </form>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        <div style="margin-top: 20px;">
+            {% if players_page_obj.has_previous %}
+                <a href="?{% if search_query_without_page %}{{ search_query_without_page }}&{% endif %}page={{ players_page_obj.previous_page_number }}" class="btn btn-gray">Previous</a>
+            {% endif %}
+
+            <span style="margin: 0 10px;">
+                Page {{ players_page_obj.number }} of {{ players_page_obj.paginator.num_pages }}
+            </span>
+
+            {% if players_page_obj.has_next %}
+                <a href="?{% if search_query_without_page %}{{ search_query_without_page }}&{% endif %}page={{ players_page_obj.next_page_number }}" class="btn btn-gray">Next</a>
+            {% endif %}
+        </div>
+    {% else %}
+        <p>No matching players found.</p>
+    {% endif %}
+{% endif %}
+
+<a href="{% url 'club_dashboard' %}" class="btn btn-gray">Back to Dashboard</a>
+
+{% endblock %}

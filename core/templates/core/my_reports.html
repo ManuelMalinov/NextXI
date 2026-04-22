@@ -1,0 +1,45 @@
+{% extends "core/base.html" %}
+{% load tz %}
+{% block content %}
+
+<h2>My Reports</h2>
+
+{% if reports %}
+    {% for report in reports %}
+        <div class="card" style="margin-bottom: 15px;">
+            <strong>Report Type:</strong> {{ report.get_report_type_display }}<br>
+
+            {% if report.trial_request %}
+                <strong>Target:</strong> Trial invitation from {{ report.trial_request.club.name }}<br>
+            {% elif report.feedback %}
+                <strong>Target:</strong> Feedback from {{ report.feedback.trial.club.name }}<br>
+            {% elif report.reported_player %}
+                <strong>Target:</strong> Player profile: {{ report.reported_player.user.username }}<br>
+            {% endif %}
+
+            <strong>Reason:</strong> {{ report.get_reason_display }}<br>
+            <strong>Status:</strong> {{ report.get_status_display }}<br>
+            <strong>Submitted:</strong> {{ report.created_at|localtime|date:"d M Y H:i" }}<br>
+
+            {% if report.resolved_at %}
+                <strong>Reviewed:</strong> {{ report.resolved_at|localtime|date:"d M Y H:i" }}<br>
+            {% endif %}
+
+            {% if report.details %}
+                <strong>Your Details:</strong>
+                <p>{{ report.details }}</p>
+            {% endif %}
+
+            {% if report.admin_notes %}
+                <strong>Admin Note:</strong>
+                <p>{{ report.admin_notes }}</p>
+            {% endif %}
+        </div>
+    {% endfor %}
+{% else %}
+    <p>You have not submitted any reports yet.</p>
+{% endif %}
+
+<a href="{% url 'dashboard' %}" class="btn btn-gray">Back to Dashboard</a>
+
+{% endblock %}

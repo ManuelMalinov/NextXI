@@ -1,0 +1,55 @@
+{% extends "core/base.html" %}
+{% load tz %}
+{% block content %}
+
+<h2>Manage Trial Requests</h2>
+
+{% if trials %}
+    {% for trial in trials %}
+        <div class="card" style="margin-bottom: 15px;">
+            <strong>{{ trial.player.user.username }}</strong><br>
+            Primary Position: {{ trial.player.get_primary_position_display }}<br>
+            Trial Date: {{ trial.trial_datetime|localtime|date:"d M Y H:i" }}<br>
+            Location: {{ trial.location }}<br>
+            Status: {{ trial.get_status_display }}<br>
+
+            {% if trial.responded_at %}
+                Player Responded: {{ trial.responded_at|localtime|date:"d M Y H:i" }}<br>
+            {% endif %}
+
+            {% if trial.attendance is not None %}
+                Attendance:
+                {% if trial.attendance %}
+                    Attended
+                {% else %}
+                    Did not attend
+                {% endif %}
+                <br>
+            {% endif %}
+
+            {% if trial.outcome %}
+                Outcome: {{ trial.get_outcome_display }}<br>
+            {% endif %}
+
+            <br>
+
+            {% if trial.status == "accepted" and not trial.feedback %}
+                <a href="{% url 'record_trial_outcome' trial.id %}" class="btn btn-blue">
+                    Record Outcome & Feedback
+                </a>
+            {% elif trial.status == "completed" and trial.feedback %}
+                <span class="btn btn-gray">Feedback Recorded</span>
+            {% elif trial.status == "pending" %}
+                <span class="btn btn-gray">Awaiting Player Response</span>
+            {% elif trial.status == "declined" %}
+                <span class="btn btn-gray">Player Declined</span>
+            {% endif %}
+        </div>
+    {% endfor %}
+{% else %}
+    <p>No trial requests have been created yet.</p>
+{% endif %}
+
+<a href="{% url 'club_dashboard' %}" class="btn btn-gray">Back to Dashboard</a>
+
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<div class="hero">
+    <h1 class="hero-title">NextXI</h1>
+    <p class="hero-subtitle">
+        A platform connecting football players with clubs through a structured and transparent trial process.
+    </p>
+
+    <div class="hero-actions">
+        <a href="/login/" class="btn btn-primary">Log In</a>
+        <a href="/register/" class="btn btn-secondary">Register</a>
+    </div>
+</div>
+
+<div class="info-grid">
+    <div class="info-card">
+        <h3>For Players</h3>
+        <p>Create a profile, control visibility, and receive trial invitations from clubs.</p>
+    </div>
+
+    <div class="info-card">
+        <h3>For Clubs</h3>
+        <p>Search, filter, and invite players to trials with a clear audit trail.</p>
+    </div>
+
+    <div class="info-card">
+        <h3>Transparent Trials</h3>
+        <p>Manage invitations, attendance, and outcomes in one structured workflow.</p>
+    </div>
+</div>
+{% endblock %}

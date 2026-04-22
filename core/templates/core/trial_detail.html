@@ -1,0 +1,72 @@
+{% extends "core/base.html" %}
+{% load tz %}
+{% block content %}
+
+<h2>Trial Invitation</h2>
+
+<div class="card">
+    <p><strong>Club:</strong> {{ trial.club.name }}</p>
+    <p><strong>Division:</strong> {{ trial.club.get_division_display }}</p>
+    <p><strong>Home Ground:</strong> {{ trial.club.home_ground }}</p>
+    <p><strong>Date & Time:</strong> {{ trial.trial_datetime|localtime|date:"d M Y H:i" }}</p>
+    <p><strong>Location:</strong> {{ trial.location }}</p>
+
+    {% if trial.notes %}
+        <p><strong>Notes:</strong> {{ trial.notes }}</p>
+    {% endif %}
+
+    <hr>
+
+    <p><strong>Club Contact Email:</strong> {{ trial.club.contact_email }}</p>
+    <p><strong>Club Contact Phone:</strong> {{ trial.club.contact_phone }}</p>
+    <p><strong>Preferred Contact Method:</strong> {{ trial.club.get_contact_pref_display }}</p>
+
+    <hr>
+
+    {% if latest_trial_report %}
+        <p><strong>Your Latest Report Status:</strong> {{ latest_trial_report.get_status_display }}</p>
+        <p><strong>Reported On:</strong> {{ latest_trial_report.created_at|localtime|date:"d M Y H:i" }}</p>
+
+        {% if latest_trial_report.resolved_at %}
+            <p><strong>Reviewed On:</strong> {{ latest_trial_report.resolved_at|localtime|date:"d M Y H:i" }}</p>
+        {% endif %}
+
+        {% if latest_trial_report.admin_notes %}
+            <p><strong>Admin Note:</strong> {{ latest_trial_report.admin_notes }}</p>
+        {% endif %}
+
+        <br>
+    {% endif %}
+
+    {% if trial.status == "pending" %}
+        <form method="post" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" name="action" value="accept" class="btn btn-blue">Accept Trial</button>
+        </form>
+
+        <form method="post" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" name="action" value="decline" class="btn btn-blue">Decline</button>
+        </form>
+    {% else %}
+        <p><strong>Status:</strong> {{ trial.get_status_display }}</p>
+    {% endif %}
+
+    <br><br>
+
+    {% if latest_trial_report and latest_trial_report.status == "open" %}
+        <span class="btn btn-gray">Report Submitted</span>
+    {% else %}
+        <a href="{% url 'report_trial_invitation' trial.id %}" class="btn btn-gray">
+            {% if latest_trial_report %}
+                Submit New Report
+            {% else %}
+                Report Invitation
+            {% endif %}
+        </a>
+    {% endif %}
+
+    <a href="{% url 'player_trials' %}" class="btn btn-gray">Back to Trials</a>
+</div>
+
+{% endblock %}
