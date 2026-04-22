@@ -4,7 +4,7 @@ NextXI is a structured amateur football recruitment system developed as a final 
 
 Main Features
 - Role-based accounts for players, clubs, and administrators
-- Structured football-specific player profiles
+- Structured football specific player profiles
 - Club side ranked player search with score and rationale
 - Shortlist management
 - Suggested players based on recent successful search context
