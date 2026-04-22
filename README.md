@@ -3,14 +3,14 @@ It supports role-based interaction for players, clubs, and administrators, allow
 
 Main Features
 - Role-based accounts for players, clubs, and administrators
-- Structured football-specific player profiles
+- Structured football specific player profiles
 - Club-side ranked player search with score and rationale
 - Shortlist management
+- Suggested players based on recent successful search context
 - Trial invitation, acceptance, and decline workflow
 - Trial outcome recording
 - Structured private feedback generation
 - Reporting and moderation support
-- Suggested players based on recent successful search context
 
 Technologies Used
 - Python
@@ -29,11 +29,10 @@ Repository Structure
 Running the Project Locally
 
  1. Open the project folder
- 2.  Open a terminal in the project root (the folder containing manage.py).
+ 2. Open a terminal in the project root (the folder containing manage.py).
  3. Create and activate a virtual environment
     
     python -m venv venv
-    
     venv\Scripts\activate
 4. Install dependencies
    
@@ -44,11 +43,10 @@ Running the Project Locally
 7. Run the development server
 
    python manage.py runserver
-9. Open the system
-Open the local address shown in the terminal, usually:
+8. Open the system
+  Open the local address shown in the terminal, usually:
 
     http://127.0.0.1:8000/
-
 
 The repository includes db.sqlite3 to support demonstration of the system with existing project data.
 Assessment access details and system access instructions are provided in the final report appendix.
