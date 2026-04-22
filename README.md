@@ -33,11 +33,12 @@ Running the Project Locally
  3. Create and activate a virtual environment
     
     python -m venv venv
+    
     venv\Scripts\activate
-4. Install dependencies
+5. Install dependencies
    
     pip install django
-5. Apply migrations
+6. Apply migrations
 
     python manage.py migrate
 7. Run the development server
