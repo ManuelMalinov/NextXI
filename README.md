@@ -1,16 +1,18 @@
-NextXI is a structured amateur football recruitment system developed as a final year project.
-It supports role-based interaction for players, clubs, and administrators, allowing clubs to search and rank players, manage shortlists, send trial invitations, record outcomes, generate structured private feedback, and handle reporting and moderation workflows.
+# NextXI
+
+NextXI is a structured amateur football recruitment system developed as a final year project. It supports role-based interaction for players, clubs, and administrators, allowing clubs to search and rank players, manage shortlists, send trial invitations, record outcomes, generate structured private feedback, and handle reporting and moderation workflows.
 
 Main Features
 - Role-based accounts for players, clubs, and administrators
-- Structured football specific player profiles
-- Club-side ranked player search with score and rationale
+- Structured football-specific player profiles
+- Club side ranked player search with score and rationale
 - Shortlist management
 - Suggested players based on recent successful search context
 - Trial invitation, acceptance, and decline workflow
 - Trial outcome recording
 - Structured private feedback generation
 - Reporting and moderation support
+
 
 Technologies Used
 - Python
@@ -26,31 +28,10 @@ Repository Structure
 - manage.py – Django management entry point
 - db.sqlite3 – SQLite database used for demonstration of the system
 
-Running the Project Locally
+Notes for Assessors:
 
- 1. Open the project folder
- 2. Open a terminal in the project root (the folder containing manage.py).
- 3. Create and activate a virtual environment
-    
-    python -m venv venv
-    
-    venv\Scripts\activate
-5. Install dependencies
-   
-    pip install django
-6. Apply migrations
-
-    python manage.py migrate
-7. Run the development server
-
-   python manage.py runserver
-8. Open the system
-  Open the local address shown in the terminal, usually:
-
-    http://127.0.0.1:8000/
-
-The repository includes db.sqlite3 to support demonstration of the system with existing project data.
-Assessment access details and system access instructions are provided in the final report appendix.
-
-Notes:
 This repository contains the final submitted version of the project code.
+
+The working deployed system is hosted separately, and access details are provided in the final report appendix.
+
+If local execution is required, open the extracted project folder that contains manage.py, create a Python virtual environment, install Django, run migrations, and start the server using standard Django commands.
